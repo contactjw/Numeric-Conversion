@@ -30,7 +30,7 @@ int main() {
 		}
 	} while (menuChoice != 9);
 
-	cout << "Program ending... have a good day!";
+	cout << "\nProgram ending... have a good day!";
 	exit(0);
 
 }
@@ -51,7 +51,7 @@ int showMenu() {
 		return tempChoice;
 	}
 
-	while (tempChoice < 1 || tempChoice > 4) {
+	while ((tempChoice < 1 || tempChoice > 4) && (tempChoice != 9)) {
 		cout << "Enter a valid menu choice: ";
 		cin >> tempChoice;
 	}
@@ -197,33 +197,59 @@ void hexToDecimal() {
 	string hexString;
 	int decNum = 0;
 
-		// Get user hexadecimal number.
-		cout << "Enter a hexadecimal number: ";
-		cin >> hexString;
+	// Get user hexadecimal number.
+	cout << "Enter a hexadecimal number: ";
+	cin >> hexString;
 
-		// Check if hexString is greater than 4 chars.
-		if (hexString.length() > 4) {
-			cout << "Error: hexadecimal number cannot be greater than 4 digits, try again." << endl;
+	// Check if hexString is greater than 4 chars.
+	if (hexString.length() > 4) {
+		cout
+				<< "Error: hexadecimal number cannot be greater than 4 digits, try again."
+				<< endl;
+		return;
+	}
+
+	// Check if hexString is an accurate hexadecimal number.
+	for (int i = 0; i < hexString.length(); i++) {
+		if ((hexString[i] < '0' || hexString[i] > '9')
+				&& (hexString[i] < 'a' || hexString[i] > 'f')) {
+			cout
+					<< "Error: hexadecimal number must be 1 through 9, a, b, c, d, e, or f"
+					<< endl;
 			return;
 		}
+	}
 
-		// Check if hexString is an accurate hexadecimal number.
-		for (int i = 0; i < hexString.length(); i++) {
-			if (hexString[i] < '0' || hexString[i] > '9') {
-				cout << "Error: hexadecimal number must be 1 through 9, a, b, c, d, e, or f" << endl;
-				return;
+	// Convert the binary digits to decimal and add to decNum.
+	for (int j = hexString.length() - 1, k = 0; j >= 0; j--, k++) {
+		if (hexString[j] >= '0' && hexString[j] <= '9')
+			decNum += (hexString[j] - '0') * pow(16, k);
+		else if (hexString[j] >= 'a' && hexString[j] <= 'f') {
+			switch (hexString[j]) {
+			case 'a':
+				decNum += 10 * pow(16, k);
+				break;
+			case 'b':
+				decNum += 11 * pow(16, k);
+				break;
+			case 'c':
+				decNum += 12 * pow(16, k);
+				break;
+			case 'd':
+				decNum += 13 * pow(16, k);
+				break;
+			case 'e':
+				decNum += 14 * pow(16, k);
+				break;
+			case 'f':
+				decNum += 15 * pow(16, k);
+				break;
 			}
 		}
+	}
 
-		// Convert the binary digits to decimal and add to decNum.
-		for (int j = hexString.length() - 1, k = 0; j >= 0; j--, k++) {
-			if (hexString[j] >= '0' && hexString[j] <= '9')
-				decNum += (hexString[j] - '0') * pow(16, k);
-		}
-
-		cout << decNum << endl;
-		return;
+	cout << decNum << endl;
+	return;
 
 }
-
 
